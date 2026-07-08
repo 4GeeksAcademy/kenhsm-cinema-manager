@@ -9,7 +9,7 @@ if (typeof document !== "undefined") {
 
 console.log("Hello from src/main.ts");
 
-function CrearSalaCine(): number[][] {
+function crearSalaCine(): number[][] {
   const filas = 8;
   const columnas = 10;
 
@@ -17,7 +17,7 @@ function CrearSalaCine(): number[][] {
   return Array.from({ length: filas }, () => Array(columnas).fill(0));
 }
 
-function MostrarEstadoSala(sala: number[][]): void {
+function mostrarEstadoSala(sala: number[][]): void {
   console.log("Estado actual de la sala:");
 
   const anchoCelda = 3;
@@ -39,7 +39,7 @@ function MostrarEstadoSala(sala: number[][]): void {
   });
 }
 
-function ReservarAsiento(sala: number[][], fila: number, columna: number): string {
+function reservarAsiento(sala: number[][], fila: number, columna: number): string {
   const filaValida = fila >= 0 && fila < sala.length;
   const columnaValida = filaValida && columna >= 0 && columna < sala[fila].length;
 
@@ -55,7 +55,7 @@ function ReservarAsiento(sala: number[][], fila: number, columna: number): strin
   return `Reserva exitosa: asiento fila ${fila}, columna ${columna} apartado.`;
 }
 
-function DisposnibilidadAsientos(
+function disposnibilidadAsientos(
   sala: number[][],
 ): { ocupados: number; disponibles: number } {
   const totalAsientos = sala.reduce((total, fila) => total + fila.length, 0);
@@ -70,7 +70,7 @@ function DisposnibilidadAsientos(
   };
 }
 
-function BuscarAsientosContiguosDisponibles(
+function buscarAsientosContiguosDisponibles(
   sala: number[][],
 ):
   | { fila: number; asientos: [number, number] }
@@ -92,16 +92,16 @@ function BuscarAsientosContiguosDisponibles(
   };
 }
 
-function ReservarPrimerParContiguoDisponible(sala: number[][]): string {
-  const resultadoBusqueda = BuscarAsientosContiguosDisponibles(sala);
+function reservarPrimerParContiguoDisponible(sala: number[][]): string {
+  const resultadoBusqueda = buscarAsientosContiguosDisponibles(sala);
 
   if ("mensaje" in resultadoBusqueda) {
     return resultadoBusqueda.mensaje;
   }
 
   const [columnaA, columnaB] = resultadoBusqueda.asientos;
-  const mensajeReservaA = ReservarAsiento(sala, resultadoBusqueda.fila, columnaA);
-  const mensajeReservaB = ReservarAsiento(sala, resultadoBusqueda.fila, columnaB);
+  const mensajeReservaA = reservarAsiento(sala, resultadoBusqueda.fila, columnaA);
+  const mensajeReservaB = reservarAsiento(sala, resultadoBusqueda.fila, columnaB);
 
   return [
     `Par contiguo encontrado en fila ${resultadoBusqueda.fila}, columnas ${columnaA} y ${columnaB}.`,
@@ -111,18 +111,18 @@ function ReservarPrimerParContiguoDisponible(sala: number[][]): string {
 }
 
 // Alias para evitar fallos por el nombre en singular usado en algunos llamados.
-function BuscarAsientosContiguoDisponibles(sala: number[][]): string {
-  return ReservarPrimerParContiguoDisponible(sala);
+function buscarAsientosContiguoDisponibles(sala: number[][]): string {
+  return reservarPrimerParContiguoDisponible(sala);
 }
 
-const salaCine = CrearSalaCine();
-MostrarEstadoSala(salaCine);
-console.log(ReservarAsiento(salaCine, 2, 5));
-console.log(DisposnibilidadAsientos(salaCine));
-console.log(ReservarAsiento(salaCine, 0, 7));
-MostrarEstadoSala(salaCine);
-console.log(BuscarAsientosContiguoDisponibles(salaCine));
-MostrarEstadoSala(salaCine);
+const salaCine = crearSalaCine();
+mostrarEstadoSala(salaCine);
+console.log(reservarAsiento(salaCine, 2, 5));
+console.log(disposnibilidadAsientos(salaCine));
+console.log(reservarAsiento(salaCine, 0, 7));
+mostrarEstadoSala(salaCine);
+console.log(buscarAsientosContiguoDisponibles(salaCine));
+mostrarEstadoSala(salaCine);
 
 
 
